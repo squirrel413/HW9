@@ -12,21 +12,22 @@ public class QueensChamber {
     public QueensChamber(){}
 
 
-    public void enterChamber(Drone drone){
+    public synchronized void enterChamber(Drone drone){
         System.out.println("*QC* " + drone.toString() + " enters chamber");
         this.queue.add(drone);
         try {
-            drone.wait();
+            wait();
         } catch (InterruptedException e) {
             System.out.println("A bee was interrupted! (drone waiting)");
         }
     }
 
-    public void summonDrone(){
+    public synchronized void summonDrone(){
         Drone summoned = queue.poll();
         assert summoned != null;
         System.out.println("*QC* Queen mates with " + summoned.toString());
         summoned.setMated(true);
+        notifyAll();
 
     }
 

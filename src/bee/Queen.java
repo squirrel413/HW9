@@ -67,25 +67,30 @@ public class Queen extends Bee {
      */
     public void run() {
         while (this.beeHive.isActive()){
+            boolean check = false;
             if (beeHive.getQueensChamber().hasDrone() && beeHive.hasResources()){
                 beeHive.getQueensChamber().summonDrone();
-                try {
-                    sleep(MATE_TIME_MS);
-                    int kids = RandomBee.nextInt(MIN_NEW_BEES,MAX_NEW_BEES);
-                    for (int i = 0; i<kids; i++) {
-                        int role = RandomBee.nextInt(1, 5);
-                        if (role == 1 | role == 2 | role == 3){
+                beeHive.claimResources();
+                check = true;
+            }
+            try {
+                sleep(MATE_TIME_MS);
+                if (check){
+                    int numberOfKids = RandomBee.nextInt(MIN_NEW_BEES,MAX_NEW_BEES);
+                    for (int i = 0; i<numberOfKids; i++) {
+                        int randRole = RandomBee.nextInt(1, 5);
+                        if (randRole == 1 | randRole == 2 | randRole == 3){
                             this.beeHive.addBee(Bee.createBee(Role.DRONE, Worker.Resource.NONE, this.beeHive));
-                        } else if (role == 4){
+                        } else if (randRole == 4){
                             this.beeHive.addBee(Bee.createBee(Role.WORKER, Worker.Resource.POLLEN, this.beeHive));
                         } else {
                             this.beeHive.addBee(Bee.createBee(Role.WORKER, Worker.Resource.NECTAR, this.beeHive));
                         }
                     }
-                    System.out.println("*QC* Queen birthed " + kids + " children");
-                } catch (InterruptedException e){}
-                notifyAll();
-            }
+                    System.out.println("*QC* Queen birthed " + numberOfKids + " children");
+                }
+            } catch (InterruptedException e){}
+
             try {
                 sleep(SLEEP_TIME_MS);
             } catch (InterruptedException e) {

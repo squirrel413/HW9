@@ -2,10 +2,6 @@ package world;
 
 import bee.Worker;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.locks.Lock;
-
-
 public class FlowerField {
 
     public final int MAX_WORKERS = 10;
@@ -13,26 +9,21 @@ public class FlowerField {
 
     public FlowerField(){}
 
-    public void enterField(Worker worker) {
+    public synchronized void enterField(Worker worker) {
         System.out.println("*FF* " + worker.toString() + " enters field");
-        while(this.numCurrentWorkers == MAX_WORKERS){
+        while (this.numCurrentWorkers == MAX_WORKERS){
             try{
-                worker.wait();
+                wait();
             } catch (InterruptedException e) {
                 System.out.println("A bee was interrupted! (waiting to work)");
             }
         }
-        try{
-            incrementNumCurrentWorkers();
-            Thread.sleep(Worker.WORKER_SLEEP_TIME_MS);
-        } catch(InterruptedException e) {
-            System.out.println("A bee was interrupted! (was collecting)");
-        }
+        this.numCurrentWorkers++;
     }
 
-    public void exitField(Worker worker) {
-        decrementNumCurrentWorkers();
-        worker.notify();
+    public synchronized void exitField(Worker worker) {
+        this.numCurrentWorkers--;
+        notify();
         System.out.println("*FF* " + worker.toString() + " leaves field");
     }
 

@@ -44,6 +44,9 @@ public class Drone extends Bee {
         if (beeHive.isActive()){
             beeHive.getQueensChamber().enterChamber(this);
         }
+        if (this.mated){
+            beeHive.beePerished(this);
+        }
 
     }
 
