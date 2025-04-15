@@ -72,8 +72,11 @@ public class Worker extends Bee {
      * repeats until the bee hive becomes inactive.
      */
     public void run() {
+        while (beeHive.isActive()) {
             this.flowerField.enterField(this);
             this.flowerField.exitField(this);
             this.beeHive.deposit(this.resource, this);
+
+        }
     }
 }
