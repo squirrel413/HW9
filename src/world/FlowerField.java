@@ -5,33 +5,32 @@ import bee.Worker;
 public class FlowerField {
 
     public final int MAX_WORKERS = 10;
-    private int numberOfBees = 0;
+    private int numberOfActiveWorkers = 0;
 
     public FlowerField(){}
 
     public void enterField(Worker worker) {
-        if (this.numberOfBees >= MAX_WORKERS)
-            try{
-                wait();
-            } catch (InterruptedException e) {
-                System.out.println("A bee was interrupted! (at flower field)");
-            }
+
         incrementBees();
         System.out.println("*FF* " + worker.toString() + " enters field");
-
+        try{
+            Thread.sleep(Worker.WORKER_SLEEP_TIME_MS);
+        } catch(InterruptedException e) {
+            System.out.println("A bee was interrupted! (was collecting)");
+        }
     }
 
     public void exitField(Worker worker) {
         decrementBees();
-        notify();
         System.out.println("*FF* " + worker.toString() + " leaves field");
+        notify();
     }
 
     private synchronized void incrementBees(){
-        this.numberOfBees++;
+        this.numberOfActiveWorkers++;
     }
 
     private synchronized void decrementBees(){
-        this.numberOfBees--;
+        this.numberOfActiveWorkers--;
     }
 }

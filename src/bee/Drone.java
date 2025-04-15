@@ -13,6 +13,8 @@ import world.BeeHive;
  */
 public class Drone extends Bee {
 
+    private boolean mated = false;
+
     /**
      * When the drone is created they should retrieve the queen's
      * chamber from the bee hive and initially the drone has not mated.
@@ -39,6 +41,17 @@ public class Drone extends Bee {
      * sleeping.
      */
     public void run() {
-        // TODO YOUR CODE HERE
+        if (beeHive.isActive()){
+            beeHive.getQueensChamber().enterChamber(this);
+        }
+
+    }
+
+    /**
+     * If the drone has mated with the Queen, this method will set their
+     * mated status.
+     */
+    public void setMated(boolean mated) {
+        this.mated = mated;
     }
 }

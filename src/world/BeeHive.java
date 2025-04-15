@@ -171,7 +171,9 @@ public class BeeHive {
      */
     public void begin() {
         System.out.println("*BH* Bee hive begins buzzing!");
-        // TODO YOUR CODE HERE
+        for (Bee bee: bees){
+            bee.start();
+        }
     }
 
     /**
@@ -196,7 +198,9 @@ public class BeeHive {
         // flip the switch
         this.active = false;
 
-        // TODO YOUR CODE HERE
+        for (Bee bee: bees){
+            try{bee.join();} catch (InterruptedException e) {}
+        }
 
         System.out.println("*BH* Bee hive stops buzzing!");
     }
@@ -209,7 +213,8 @@ public class BeeHive {
      * @param bee the bee who perished
      */
     public synchronized void beePerished (Bee bee){
-        // TODO YOUR CODE HERE
+        bee.interrupt();
+        this.perishedBees.add(bee);
     }
 
     /**
@@ -219,7 +224,8 @@ public class BeeHive {
      * @param bee the new bee
      */
     public synchronized void addBee(Bee bee) {
-        // TODO YOUR CODE HERE
+        this.bees.add(bee);
+        bee.start();
     }
 
     /**
@@ -229,8 +235,7 @@ public class BeeHive {
      * @return do we have enough resources?
      */
     public synchronized boolean hasResources() {
-        // TODO YOUR CODE HERE
-        return false;
+        return this.nectar != 0 && this.pollen != 0;
     }
 
     /**
@@ -240,7 +245,10 @@ public class BeeHive {
      * @rit.pre {@link BeeHive#hasResources()} is true
      */
     public synchronized void claimResources() {
-        // TODO YOUR CODE HERE
+        if (this.hasResources()) {
+            this.pollen--;
+            this.nectar--;
+        }
     }
 
     /**
@@ -258,6 +266,15 @@ public class BeeHive {
      */
     public synchronized void deposit(Resource resource, Worker bee) {
         System.out.println("*BH* " + bee + " deposits");
-        // TODO YOUR CODE HERE
+        if (resource.equals(Resource.NECTAR)) {
+            this.nectar++;
+            this.nectarGathered++;
+        } else if (resource.equals(Resource.POLLEN)) {
+            this.pollen++;
+            this.pollenGathered++;
+        } else {
+            System.out.println("Tried to deposit nothing?");
+        }
+
     }
 }

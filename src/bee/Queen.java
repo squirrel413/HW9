@@ -66,7 +66,15 @@ public class Queen extends Bee {
      */
     public void run() {
         while (this.beeHive.isActive()){
-
+            if (beeHive.getQueensChamber().hasDrone() && beeHive.hasResources()){
+                beeHive.getQueensChamber().summonDrone();
+                notifyAll();
+            }
+            try {
+                sleep(SLEEP_TIME_MS);
+            } catch (InterruptedException e) {
+                System.out.println("A bee was interrupted! (the queen sleeping)");
+            }
         }
     }
 }
