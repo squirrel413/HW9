@@ -26,11 +26,14 @@ public class QueensChamber {
         Drone summoned = queue.poll();
         assert summoned != null;
         System.out.println("*QC* Queen mates with " + summoned.toString());
+        summoned.setMated(true);
 
     }
 
     public void dismissDrone(){
-
+        Drone dismiss = this.queue.poll();
+        assert dismiss != null;
+        dismiss.interrupt();
     }
 
     public boolean hasDrone(){

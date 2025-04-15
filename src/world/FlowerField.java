@@ -17,7 +17,7 @@ public class FlowerField {
         System.out.println("*FF* " + worker.toString() + " enters field");
         while(this.numCurrentWorkers == MAX_WORKERS){
             try{
-                wait();
+                worker.wait();
             } catch (InterruptedException e) {
                 System.out.println("A bee was interrupted! (waiting to work)");
             }
@@ -32,7 +32,7 @@ public class FlowerField {
 
     public void exitField(Worker worker) {
         decrementNumCurrentWorkers();
-        notify();
+        worker.notify();
         System.out.println("*FF* " + worker.toString() + " leaves field");
     }
 
