@@ -65,6 +65,8 @@ public class Queen extends Bee {
      * still waiting in her chamber.
      */
     public void run() {
-        // TODO YOUR CODE HERE
+        while (this.beeHive.isActive()){
+
+        }
     }
 }

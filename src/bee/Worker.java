@@ -72,6 +72,12 @@ public class Worker extends Bee {
      * repeats until the bee hive becomes inactive.
      */
     public void run() {
-        // TODO YOUR CODE HERE
+        this.flowerField.enterField(this);
+        try{
+            sleep(WORKER_SLEEP_TIME_MS);
+        } catch(InterruptedException e) {
+            System.out.println("A bee was interrupted! (was collecting)");
+        }
+        this.flowerField.exitField(this);
     }
 }
